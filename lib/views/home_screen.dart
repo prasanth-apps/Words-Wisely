@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:words_wisely/controllers/api_controller.dart';
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: GoogleFonts.poppins(fontSize: 30, color: Colors.white),
         ),
       ),
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white,
       body: Obx(() {
         final quote = apiController.quote.value;
         if (quote == null) {
@@ -34,30 +35,62 @@ class _HomeScreenState extends State<HomeScreen> {
         return Center(
           child: Container(
             height: 400,
-            width: 400,
+            width: 350,
             color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(quote.q),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(Icons.heat_pump_rounded),
-                    IconButton(
-                      onPressed: () {
-                        final quote = apiController.fetchQuote();
-                      },
-                      icon: Icon(Icons.skip_next),
-                    ),
-                  ],
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(quote.q, style: GoogleFonts.poppins(fontSize: 30)),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        quote.a,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 18,
+                          backgroundColor: Colors.lightBlueAccent,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(Icons.favorite, color: Colors.red, size: 40),
+                      IconButton(
+                        onPressed: () {
+                          final quote = apiController.fetchQuote();
+                        },
+                        icon: Icon(Icons.navigate_next, size: 45),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
       }),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: "Favourite",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
+          ),
+        ],
+      ),
     );
   }
 }
